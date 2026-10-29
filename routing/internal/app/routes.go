@@ -2,6 +2,7 @@ package app
 
 import (
 	httpv1 "routing/internal/transport/http/v1"
+	bloghttp "routing/internal/transport/http/v1/blogs"
 	posthttp "routing/internal/transport/http/v1/posts"
 
 	"github.com/gin-gonic/gin"
@@ -12,5 +13,6 @@ func RegisterRoutes(router *gin.Engine) {
 
 	httpv1.RegisterRoutes(api.Group("/v1"), httpv1.Handlers{
 		Posts: posthttp.NewHandler(), // sau này: NewHandler(postService)
+		Blogs: bloghttp.NewHandler(),
 	})
 }
