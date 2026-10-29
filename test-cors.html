@@ -1,0 +1,72 @@
+```html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test CORS</title>
+</head>
+<body>
+    <h1>Test CORS với Gin</h1>
+
+    <button onclick="testSimpleRequest()">
+        Test 1: GET không cần OPTIONS
+    </button>
+
+    <button onclick="testPreflightRequest()">
+        Test 2: GET cần OPTIONS
+    </button>
+
+    <pre id="result"></pre>
+
+    <script>
+        const API_URL = "http://localhost:8080/api/v1/posts/";
+
+        function log(message) {
+            const result = document.getElementById("result");
+            result.textContent += message + "\n";
+            console.log(message);
+        }
+
+        // Test 1: GET đơn giản, không cần preflight
+        async function testSimpleRequest() {
+            document.getElementById("result").textContent = "";
+
+            log("=== Test 1: Simple GET ===");
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "GET"
+                });
+
+                log("Status: " + response.status);
+                log("Response: " + await response.text());
+            } catch (error) {
+                log("Request failed: " + error.message);
+            }
+        }
+
+        // Test 2: GET có Authorization, cần preflight
+        async function testPreflightRequest() {
+            document.getElementById("result").textContent = "";
+
+            log("=== Test 2: GET with Authorization ===");
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer test-token"
+                    }
+                });
+
+                log("Status: " + response.status);
+                log("Response: " + await response.text());
+            } catch (error) {
+                log("Request failed: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
+```
